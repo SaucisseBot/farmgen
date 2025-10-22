@@ -1,1 +1,1 @@
-simple rust scripte to mimic multiword mod uses
+simple rust script to mimic multiword mod uses
