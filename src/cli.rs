@@ -9,7 +9,7 @@ pub fn prompt(msg: &str) -> String {
     input.trim().to_string()
 }
 
-/// Main menu
+
 pub fn main_menu() -> io::Result<u8> {
     println!("\nMain Menu:");
     println!("1) Create a new single dimension");
@@ -21,7 +21,7 @@ pub fn main_menu() -> io::Result<u8> {
     Ok(choice.parse::<u8>().unwrap_or(0))
 }
 
-/// Regenerate all 3 dimensions inside one datapack ("farm_worlds")
+
 pub fn regen_all() -> io::Result<()> {
     println!("\n🔁 Regenerating all farm dimensions in one datapack...");
 
@@ -39,7 +39,6 @@ pub fn regen_all() -> io::Result<()> {
     Ok(())
 }
 
-/// Delete the datapack entirely
 pub fn delete_all() -> io::Result<()> {
     println!("\n🗑️ Deleting farm_worlds datapack...");
     datapack::delete("farm_worlds")?;

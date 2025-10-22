@@ -6,7 +6,7 @@ use std::io;
 
 const SERVER_PATH: &str = "~/pokecity/server";
 
-/// Interactive creation of a datapack
+
 pub fn create_interactive() -> io::Result<()> {
     let pack_name = prompt("Datapack name (e.g. farmworld): ");
     let dim_name = prompt("Internal dimension name (e.g. farm): ");
@@ -26,7 +26,7 @@ pub fn create_interactive() -> io::Result<()> {
     create(dim_type, &pack_name, &dim_name)
 }
 
-/// Create a datapack of a given type
+
 pub fn create(dim_type: &str, pack_name: &str, dim_name: &str) -> io::Result<()> {
     let (t, settings, infiniburn, effects) = match dim_type {
         "nether" => (
@@ -116,27 +116,26 @@ pub fn create(dim_type: &str, pack_name: &str, dim_name: &str) -> io::Result<()>
     println!("✅ Created datapack '{}'", pack_name);
     Ok(())
 }
-/// Create a datapack with a custom namespace (used for multi-world farm regen)
 
-/// Interactive deletion
+
+
 pub fn delete_interactive() -> io::Result<()> {
     let pack_name = prompt("Datapack to delete: ");
     delete(&pack_name)
 }
 
-/// Delete datapack by name
 pub fn delete(pack_name: &str) -> io::Result<()> {
     let base_path = expand_tilde(&format!("{}/world/datapacks/{}/", SERVER_PATH, pack_name));
     remove_dir_if_exists(&base_path)?;
     Ok(())
 }
-/// Create a datapack containing 3 dimensions: farm:overworld, farm:nether, farm:end
+
 pub fn create_multi(pack_name: &str) -> io::Result<()> {
     let base_path = expand_tilde(&format!("{}/world/datapacks/{}/", SERVER_PATH, pack_name));
     let dim_path = base_path.join("data/farm/dimension");
     fs::create_dir_all(&dim_path)?;
 
-    // -- 1️⃣ pack.mcmeta --
+
     let pack_mcmeta = json!({
         "pack": {
             "pack_format": 48,
@@ -148,7 +147,7 @@ pub fn create_multi(pack_name: &str) -> io::Result<()> {
         serde_json::to_string_pretty(&pack_mcmeta)?,
     )?;
 
-    // -- 2️⃣ Overworld --
+
     let overworld_json = json!({
         "type": "minecraft:overworld",
         "generator": {
@@ -169,7 +168,6 @@ pub fn create_multi(pack_name: &str) -> io::Result<()> {
         serde_json::to_string_pretty(&overworld_json)?,
     )?;
 
-    // -- 3️⃣ Nether --
     let nether_json = json!({
         "type": "minecraft:the_nether",
         "generator": {
@@ -189,7 +187,7 @@ pub fn create_multi(pack_name: &str) -> io::Result<()> {
         dim_path.join("nether.json"),
         serde_json::to_string_pretty(&nether_json)?,
     )?;
-    // -- 4️⃣ End --
+
     let end_json = json!({
         "type": "minecraft:the_end",
         "generator": {
